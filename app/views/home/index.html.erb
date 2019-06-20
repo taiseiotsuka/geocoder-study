@@ -1,0 +1,34 @@
+<%= stylesheet_link_tag 'css/map', media: 'all', 'data-turbolinks-track': 'reload' %>
+<script type="text/javascript">
+function initMap() {
+    let locations = JSON.parse('<%= @arr_json %>')
+    let map = new google.maps.Map(document.getElementById('map'), {
+         zoom: 12,
+         center: new google.maps.LatLng(locations[0][1], locations[0][2]),
+         mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    let infowindow = new google.maps.InfoWindow;
+    let marker, i;
+
+    for (i = 0; i < locations.length; i++) {  
+        marker = new google.maps.Marker({
+             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+             map: map
+        });
+
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+             return function() {
+                 infowindow.setContent(locations[i][0]);
+                 infowindow.open(map, marker);
+             }
+        })(marker, i));
+    }
+}
+</script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAP_API'] %>&callback=initMap">
+</script>
+<div id="map"></div>
+<%= javascript_include_tag 'js/place.js', 'data-turbolinks-track': 'reload' %>

@@ -15,11 +15,11 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
   password:
-  host: localhost
+  host: 127.0.0.1
 
 development:
   <<: *default
-  database: geocoder-study_development
+  database: dev_geo_study
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -49,6 +49,7 @@ test:
 #
 production:
   <<: *default
-  database: geocoder-study_production
-  username: geocoder-study
-  password: <%= ENV['GEOCODER-STUDY_DATABASE_PASSWORD'] %>
+  host: localhost
+  database: prod_geo_study
+  username: <%= ENV['PROD_GEO_STUDYDB_USER'] %>
+  password: <%= ENV['PROD_GEO_STUDYDB_PASS'] %>
